@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+<button onclick="test('memo')">メモ帳起動</button>
+<script>
+    console.log("test");
+
+    function test(arg) {
+        if (!window.boundEvent) {
+            alert('window.boundEvent does not exist.');
+            return;
+        }
+        window.boundEvent.raiseEvent('click', JSON.stringify({
+            data1: arg,
+        }));
+    }
+
+</script>
