@@ -7,17 +7,33 @@
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 <button onclick="test('memo')">メモ帳起動</button>
-<script>
-    console.log("test");
+<script type="text/javascript">
+    (async function () {
+        //<embed user provided code here>
+        await CefSharp.BindObjectAsync("boundAsync", "bound");
 
-    function test(arg) {
-        if (!window.boundEvent) {
-            alert('window.boundEvent does not exist.');
-            return;
-        }
-        window.boundEvent.raiseEvent('click', JSON.stringify({
-            data1: arg,
-        }));
-    }
+        boundAsync.hello('CefSharp').then(function (res) {
+            assert.equal(res, "Hello CefSharp");
+            asyncCallback();
+        });
+    })();
 
+    (async () => {
+        await CefSharp.BindObjectAsync("boundAsync", "bound");
+
+        boundAsync.hello('CefSharp').then(function (res) {
+            assert.equal(res, "Hello CefSharp");
+            asyncCallback();
+        });
+    })();
+
+    CefSharp.BindObjectAsync("boundAsync2").then(function (result) {
+        boundAsync2.hello('CefSharp').then(function (res) {
+            assert.equal(res, "Hello CefSharp");
+            // NOTE the ability to delete a bound object
+            assert.equal(true, CefSharp.DeleteBoundObject("boundAsync2"), "Object was unbound");
+            assert.ok(window.boundAsync2 === undefined, "boundAsync2 is now undefined");
+            asyncCallback();
+        });
+    });
 </script>
